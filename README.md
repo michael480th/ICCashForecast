@@ -78,17 +78,20 @@ folder naming rules.
 
 ## Project status
 
-**Phase 0 — Corpus Setup (current).** This commit establishes the repository
-structure, naming conventions, the data dictionary, the canonical `funds.csv`,
-and empty (header-only) CSV tables for every stage of the pipeline. No pipeline
-scripts are implemented yet.
+**Phase 1 — Inventory System (current).** The repository structure, data
+dictionary, naming conventions, and canonical `funds.csv` are in place (Phase 0),
+and the document inventory system is implemented: it hashes every file in
+`data/raw/`, classifies it, builds `document_inventory.csv`, and flags duplicates
+and provenance gaps. See [scripts/inventory/](scripts/inventory/README.md). The
+pipeline currently runs cleanly against an empty `data/raw/` and is ready for
+real documents.
 
 Roadmap (see the full project plan):
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| 0 | Corpus setup: structure, README, data dictionary, funds.csv | ✅ current |
-| 1 | Inventory system: hashing, dedupe, classification | ⏳ planned |
+| 0 | Corpus setup: structure, README, data dictionary, funds.csv | ✅ done |
+| 1 | Inventory system: hashing, dedupe, classification | ✅ current |
 | 2 | First extractor: quarterly financial report → cash/actuals | ⏳ planned |
 | 3 | First forecast: General Fund, 3 scenarios, risk scoring | ⏳ planned |
 | 4 | Static site: dashboard, fund/source/assumptions/downloads | ⏳ planned |
@@ -105,8 +108,15 @@ Roadmap (see the full project plan):
    [docs/NAMING_CONVENTIONS.md](docs/NAMING_CONVENTIONS.md), e.g.
    `data/raw/board_packets/YYYY-MM-DD/financial_report.pdf`.
 2. Record the source URL in a `source_urls.md` next to the files.
-3. (Once the pipeline exists) rerun it locally or via GitHub Actions to
-   refresh the inventory, canonical tables, forecast, and site.
+3. Rebuild the inventory to register and classify the new files:
+
+   ```bash
+   python scripts/inventory/build_document_inventory.py
+   python scripts/inventory/detect_duplicates.py
+   ```
+
+   Later phases will extend this into the full extract → normalize → forecast →
+   site run (locally or via GitHub Actions).
 
 Manual data entry and corrections go under `data/manual/` and must always cite a
 source file and page. Manual overrides never silently replace extracted values;
