@@ -57,6 +57,11 @@ consumes the normalized canonical tables under `data/normalized/`.
 ```text
 data/
   raw/          Source documents, organized by type and date (input)
+    board_packets/        Board meeting materials, by meeting date
+    district_reports/     ICCSD's own reports — incl. audits/ (FY20–23 ACFRs)
+    state_reports/        Iowa state filings — incl. dom/ (statewide DOM/DE workbooks)
+    peer_districts/       Other districts' audits (benchmark context, not forecast input)
+    transcripts/  manual_uploads/
   extracted/    Raw extracted tables/text + document_inventory.csv
   normalized/   Canonical financial tables (the forecast's only input)
   manual/       Manual overrides + corrections log
@@ -82,9 +87,16 @@ folder naming rules.
 dictionary, naming conventions, and canonical `funds.csv` are in place (Phase 0),
 and the document inventory system is implemented: it hashes every file in
 `data/raw/`, classifies it, builds `document_inventory.csv`, and flags duplicates
-and provenance gaps. See [scripts/inventory/](scripts/inventory/README.md). The
-pipeline currently runs cleanly against an empty `data/raw/` and is ready for
-real documents.
+and provenance gaps. See [scripts/inventory/](scripts/inventory/README.md).
+
+An initial corpus has been imported from the companion
+[ICCSDAdvocacy](https://github.com/michael480th/ICCSDAdvocacy) repository
+(**137 documents**): the Iowa City CSD audited ACFRs (FY2020–FY2023), the Iowa
+DOM/DE statewide workbooks (spending authority, enrollment, valuations, levies,
+at-risk), pre-extracted ICCSD data (raw provenance), and 84 peer-district audits
+for benchmark context. Each imported area carries a `PROVENANCE.md`. **Note:**
+this corpus is annual baselines and revenue drivers — the *monthly* board cash
+reports the forecast ultimately runs on still need to be added from board packets.
 
 Roadmap (see the full project plan):
 

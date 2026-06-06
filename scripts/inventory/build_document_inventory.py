@@ -50,7 +50,16 @@ INVENTORY_FIELDS = [
 ]
 
 # Files that are not source documents and should never be inventoried.
-IGNORE_NAMES = {".gitkeep", "source_urls.md", ".ds_store"}
+IGNORE_NAMES = {
+    ".gitkeep",
+    ".ds_store",
+    "source_urls.md",
+    "source.txt",
+    "readme.md",
+    "provenance.md",
+    "blank.txt",
+    "text.txt",
+}
 
 # Document types we treat as "not yet meaningfully classified".
 UNKNOWN_TYPES = {"", "generic_pdf", "generic_excel"}
@@ -102,11 +111,25 @@ def make_document_id(rel_path: Path, meeting_date: str) -> str:
     """Stable, human-readable id independent of classification.
 
     Uses the meeting date (or ``undated``) plus a slug of the filename stem, so
-    re-running and re-classifying never changes a document's id.
+    re-running and re-classifying never changes a document's id. The immediate
+    parent folder is included when it adds information (i.e. when it isn't just
+    the date folder already used as the prefix), so files that share a filename
+    across folders — e.g. ``district-extractions/Iowa_City_CSD.csv`` and
+    ``notes-extractions/Iowa_City_CSD.csv`` — get distinct ids.
     """
-    slug = re.sub(r"[^a-z0-9]+", "_", rel_path.stem.lower()).strip("_")
+    def slugify(text: str) -> str:
+        return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
+
+    stem_slug = slugify(rel_path.stem)
     prefix = meeting_date if meeting_date else "undated"
-    return f"{prefix}_{slug}"
+    parent_slug = slugify(rel_path.parent.name)
+    date_slug = slugify(meeting_date)
+
+    parts = [prefix]
+    if parent_slug and parent_slug not in {date_slug, "raw", ""}:
+        parts.append(parent_slug)
+    parts.append(stem_slug)
+    return "_".join(parts)
 
 
 def classify_document(rel_path: Path) -> str:
@@ -144,7 +167,7 @@ def classify_document(rel_path: Path) -> str:
         return "certified_budget"
     if "annual" in name and ("report" in name or "financial" in name):
         return "annual_financial_report"
-    if "audit" in name:
+    if "audit" in name or {"audits", "auditreports"} & parts:
         return "audit"
     if "debt" in name:
         return "debt_schedule"
@@ -226,11 +249,18 @@ def build_inventory(
     existing = load_existing_inventory(inventory_path)
 
     rows: list[dict] = []
+    seen_ids: set[str] = set()
     for path in iter_source_files(raw_dir):
         rel_path = path.relative_to(repo_root)
         rel_str = rel_path.as_posix()
         meeting_date = infer_meeting_date(rel_path)
         doc_id = make_document_id(rel_path, meeting_date)
+        if doc_id in seen_ids:  # guarantee uniqueness even on a slug collision
+            suffix = 2
+            while f"{doc_id}_{suffix}" in seen_ids:
+                suffix += 1
+            doc_id = f"{doc_id}_{suffix}"
+        seen_ids.add(doc_id)
 
         auto_type = classify_document(rel_path)
         override_type = overrides.get(rel_str)

@@ -65,6 +65,11 @@ def test_hash_is_deterministic_and_matches_for_identical_content(repo):
         ("data/raw/board_packets/2026-06-09/agenda.pdf", "board_packet"),
         ("data/raw/state_reports/fy25_certified_budget.pdf", "certified_budget"),
         ("data/raw/state_reports/random_thing.pdf", "generic_pdf"),
+        # Audit classified by folder even when the filename lacks "audit".
+        ("data/raw/district_reports/audits/Iowa City CSD-2020.pdf", "audit"),
+        ("data/raw/peer_districts/audits/Ankeny CSD-2021.pdf", "audit"),
+        # DOM workbooks fall through to generic_excel by extension.
+        ("data/raw/state_reports/dom/UAB/Unspent Authorized Budget Report.xlsx", "generic_excel"),
     ],
 )
 def test_classify_document(rel, expected):
@@ -88,6 +93,15 @@ def test_document_id_is_stable_across_classification():
     assert bdi.make_document_id(rel, md) == "2026-05-12_fy26_q3_financial_report_2026_05_12"
 
 
+def test_document_id_disambiguates_same_filename_in_different_folders():
+    a = Path("data/raw/manual_uploads/x/district-extractions/Iowa_City_CSD.csv")
+    b = Path("data/raw/manual_uploads/x/notes-extractions/Iowa_City_CSD.csv")
+    id_a = bdi.make_document_id(a, "")
+    id_b = bdi.make_document_id(b, "")
+    assert id_a != id_b
+    assert "district_extractions" in id_a and "notes_extractions" in id_b
+
+
 # --------------------------------------------------------------------------- #
 # build_inventory
 # --------------------------------------------------------------------------- #
@@ -104,13 +118,18 @@ def test_build_inventory_lists_all_source_files(repo):
 
 def test_build_inventory_skips_metadata_files(repo):
     p = _paths(repo)
-    # Drop a source_urls.md and a .gitkeep next to real files; they must be skipped.
+    # Metadata/provenance files next to real files must be skipped (not treated
+    # as source documents — e.g. source.txt must NOT be classified as a transcript).
     (p["raw"] / "board_packets" / "2026-05-12" / "source_urls.md").write_text("x")
     (p["raw"] / "district_reports" / ".gitkeep").write_text("")
+    (p["raw"] / "district_reports" / "source.txt").write_text("https://example.org")
+    (p["raw"] / "district_reports" / "PROVENANCE.md").write_text("origin notes")
     rows = bdi.build_inventory(p["raw"], p["inventory"], p["manual"], repo, today="2026-06-06")
     paths = {r["file_path"] for r in rows}
     assert not any(fp.endswith("source_urls.md") for fp in paths)
     assert not any(fp.endswith(".gitkeep") for fp in paths)
+    assert not any(fp.endswith("source.txt") for fp in paths)
+    assert not any(fp.endswith("PROVENANCE.md") for fp in paths)
 
 
 def test_build_inventory_infers_date_and_classifies(repo):
