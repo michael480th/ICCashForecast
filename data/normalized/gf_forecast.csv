@@ -1,0 +1,7 @@
+fiscal_year,scenario,gf_revenue,gf_expenditure,operating_result,assigned_unassigned,solvency_pct,solvency_status,uab_pct,uab_status
+2026,conservative,213370053,214052703,-682650,13932096,6.79,below_target,1.0,below_target
+2027,conservative,217637454,221544547,-3907094,10025002,4.79,below_floor,,
+2026,base,218169788,212143412,6026376,20641122,9.83,below_target,2.5,below_target
+2027,base,224714882,218507714,6207167,26848289,12.41,on_target,,
+2026,optimistic,219042467,208112687,10929780,25544526,12.12,on_target,5.0,on_target
+2027,optimistic,227804166,213315504,14488661,40033187,18.25,above_target,,

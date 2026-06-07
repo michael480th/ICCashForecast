@@ -120,6 +120,16 @@ ratio (2.31%, FY2025) is last of 15 peers (median ~16%) and below target every
 year since FY2020; audited solvency has sat below its 5% floor in three of four
 years. Regenerate with `python scripts/analysis/kpi_scorecard.py`.
 
+**Forward forecast (FY2026–FY2027).** [docs/forecast.md](docs/forecast.md) projects
+the General Fund and its policy KPIs under conservative/base/optimistic scenarios,
+showing uncertain quantities as bands. After the FY2020–23 trough the fund balance
+has rebuilt (FY2024 assigned+unassigned $14.88M), so the base case has **solvency
+recovering toward ~10% by FY2026 and ~12% by FY2027** — climbing back toward, but
+not yet inside, the 10–15% target — while the UAB cushion stays below the 5–10%
+target. A single soft revenue year pulls solvency back toward the 5% floor
+(conservative band). Assumptions are tracked in `data/normalized/assumptions.csv`;
+regenerate with `python scripts/analysis/gf_forecast.py`.
+
 Roadmap (see the full project plan):
 
 | Phase | Focus | Status |
