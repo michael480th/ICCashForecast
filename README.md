@@ -105,13 +105,20 @@ by the table each feeds — is in
 [docs/board_materials_triage.md](docs/board_materials_triage.md), and those
 classifications are applied via `data/manual/document_classification_manual.csv`.
 
+**Phase 2 — first extractor (done).** `scripts/extractors/quarterly_financial_report.py`
+parses the FY26 Q2 and Q3 financial reports into real canonical data:
+`receipts_disbursements.csv` (per-fund beginning balance, receipts, disbursements,
+ending balance) and `cash_balances.csv` (cash vs. investments by fund group). The
+extracted figures self-reconcile — the six cash groups sum to the all-funds total
+within rounding. See [scripts/extractors/](scripts/extractors/README.md).
+
 Roadmap (see the full project plan):
 
 | Phase | Focus | Status |
 |-------|-------|--------|
 | 0 | Corpus setup: structure, README, data dictionary, funds.csv | ✅ done |
-| 1 | Inventory system: hashing, dedupe, classification | ✅ current |
-| 2 | First extractor: quarterly financial report → cash/actuals | ⏳ planned |
+| 1 | Inventory system: hashing, dedupe, classification | ✅ done |
+| 2 | First extractor: quarterly financial report → cash/actuals | ✅ current |
 | 3 | First forecast: General Fund, 3 scenarios, risk scoring | ⏳ planned |
 | 4 | Static site: dashboard, fund/source/assumptions/downloads | ⏳ planned |
 | 5 | GitHub automation: Actions build + Pages publish | ⏳ planned |
