@@ -15,7 +15,7 @@ Forecast of the General Fund and its two board-policy KPIs. Uncertain quantities
 | FY2024 (CAR, est.) | — | ~7.5%* | — |
 | FY2025 (est.) | — | ~7.3% | — |
 | **FY2026 (proj.)** | 6.8% | **9.8%** | 12.1% |
-| **FY2027 (proj.)** | 4.8% | **12.4%** | 18.2% |
+| **FY2027 (proj.)** | 5.3% | **13.4%** | 19.2% |
 
 *FY2024 denominator uses an estimated GF revenue (~$206M); FY24/25 revenue is not separately reported in audited form.*
 

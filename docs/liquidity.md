@@ -1,40 +1,43 @@
 # ICCSD General Fund monthly liquidity forecast
 
-Month-end GF cash projected from the latest known balance (**$13.1M** on 2026-03-31) through June 2027, applying FY2025 monthly seasonality scaled to each scenario. Operating flows only — known one-time events (property-sale proceeds, interfund loans) are not yet layered in.
+Month-end GF cash projected from the latest known balance (**$13.1M** on 2026-03-31) through June 2027, applying FY2025 monthly seasonality scaled to each scenario, then overlaying the dated interfund cash flows the board has authorized.
 
-> ICCSD collects property tax in two waves (**October** and **April**); cash draws down in between and drops on the **June** payroll/accrual spike. The low points fall in **early fall**, before the October wave.
+> **Two facts about that $13M starting balance:** it already includes a **$10M loan from the Health Insurance fund** (received 8/2025, due back by 10/1/2026), and in **May 2026 the GF lends SAVE $7.32M** that doesn't return until Oct 1. Real available cash over the summer is lower than the headline.
+
+> Property tax arrives in two waves (**October**, **April**); cash troughs in **early fall** — exactly the **September 2026** risk the district's own COO memo flags.
 
 ## Projected cash low points (troughs)
 
-| Scenario | Trough month | GF cash at trough |
+| Scenario | Operating only | **With interfund obligations** |
 |---|---|---|
-| conservative | Sep 2026 | **$1.0M** ⚠️ near/below zero |
-| base | Sep 2026 | **$4.4M** |
-| optimistic | Sep 2026 | **$7.1M** |
+| conservative | $1.2M (Sep 2026) | **$-6.2M (Sep 2026)** 🔴 **negative** |
+| base | $4.7M (Sep 2026) | **$-2.6M (Sep 2026)** 🔴 **negative** |
+| optimistic | $7.4M (Sep 2026) | **$0.1M (Sep 2026)** ⚠️ |
 
-## Month-end cash trajectory (base, with band)
+## Month-end cash *with interfund obligations* (base, with band)
 
 | Month | Conservative | Base | Optimistic |
 |---|---|---|---|
 | Apr 2026 | 39.0 | **40.1** | 40.6 |
-| May 2026 | 37.3 | **39.0** | 39.9 |
-| Jun 2026 | 14.7 | **17.1** | 18.8 |
-| Jul 2026 | 11.9 | **14.4** | 16.3 |
-| Aug 2026 | 6.0 | **8.7** | 10.8 |
-| Sep 2026 | 1.0 | **4.4** | 7.1 | ◀ trough
-| Oct 2026 | 31.9 | **37.3** | 41.2 |
-| Nov 2026 | 25.6 | **31.6** | 36.1 |
-| Dec 2026 | 27.0 | **33.9** | 39.1 |
-| Jan 2027 | 19.7 | **27.2** | 33.0 |
-| Feb 2027 | 13.2 | **21.3** | 27.8 |
-| Mar 2027 | 10.2 | **19.1** | 26.2 |
-| Apr 2027 | 36.4 | **47.0** | 55.1 |
-| May 2027 | 34.5 | **45.8** | 54.6 |
-| Jun 2027 | 10.8 | **23.3** | 33.3 |
+| May 2026 | 30.0 | **31.7** | 32.6 |
+| Jun 2026 | 7.4 | **9.8** | 11.5 |
+| Jul 2026 | 4.6 | **7.2** | 9.0 |
+| Aug 2026 | -1.2 | **1.5** | 3.6 |
+| Sep 2026 | -6.2 | **-2.6** | 0.1 | ◀ trough
+| Oct 2026 | 22.2 | **27.8** | 31.6 |
+| Nov 2026 | 15.9 | **22.2** | 26.7 |
+| Dec 2026 | 17.5 | **24.7** | 29.9 |
+| Jan 2027 | 10.2 | **18.2** | 24.0 |
+| Feb 2027 | 3.8 | **12.5** | 19.0 |
+| Mar 2027 | 0.9 | **10.5** | 17.6 |
+| Apr 2027 | 27.2 | **38.5** | 46.7 |
+| May 2027 | 25.3 | **37.6** | 46.3 |
+| Jun 2027 | 1.8 | **15.4** | 25.4 |
 
 ## Read
 
-- **Base-case low point: $4.4M in Sep 2026** — the early-fall trough before October property taxes arrive.
-- **Conservative low point: $1.0M in Sep 2026** — effectively out of cash. A single soft revenue year turns the timing squeeze into a genuine liquidity event.
-- This is why the property-sale proceeds and interfund-loan timing matter: they land near these troughs and are the levers that keep cash positive. Layering those one-time events in is the next refinement.
+- **With the interfund loans, the base case bottoms at $-2.6M in Sep 2026** — the General Fund goes negative, because the $7.32M lent to SAVE is still out when fall spending peaks.
+- **Conservative: $-6.2M (Sep 2026)** — a clear cash shortfall. This is why the board authorized a **$3M anticipatory warrant** (a short-term borrowing backstop, undrawn as of spring 2026).
+- **The levers that close the gap:** (1) SAVE repays the $7.32M by Oct 1; (2) the **1725 N. Dodge sale proceeds** land in the GF (amount TBD — the COO memo warns September gets harder if it doesn't close); (3) **postponing the $10M Insurance repayment** past June 30 preserves liquidity (at the cost of an FY26 audit note); (4) the $3M warrant.
+- **Bottom line:** ICCSD can likely cover the fall trough, but only by actively managing interfund timing and one-time inflows — there is little to no margin. That is the liquidity-timing crunch, quantified.
 

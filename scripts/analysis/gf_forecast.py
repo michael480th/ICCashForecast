@@ -52,10 +52,12 @@ UAB25 = dict(max_auth=217_878_973, exp=212_847_380, uab=5_031_593)  # FY2025
 # ---- Scenario levers ----------------------------------------------------- #
 # (rev vs FY26 budget, exp vs FY26 budget, FY27 rev growth, FY27 exp growth,
 #  FY26 spend-rate = exp/max_auth, FY26 max_auth growth over FY25)
+# FY27 expense growth base = 2.0%, the district's stated target ("FY27 budget is
+# targeted to grow 2% in expenses", COO Anticipated Borrowing Need memo 4/28/2026).
 SCEN = {
-    "conservative": dict(r26=0.978, e26=1.009, g27r=0.020, g27e=0.035, spend=0.990, auth=1.025),
-    "base":         dict(r26=1.000, e26=1.000, g27r=0.030, g27e=0.030, spend=0.975, auth=1.030),
-    "optimistic":   dict(r26=1.004, e26=0.981, g27r=0.040, g27e=0.025, spend=0.950, auth=1.035),
+    "conservative": dict(r26=0.978, e26=1.009, g27r=0.020, g27e=0.030, spend=0.990, auth=1.025),
+    "base":         dict(r26=1.000, e26=1.000, g27r=0.030, g27e=0.020, spend=0.975, auth=1.030),
+    "optimistic":   dict(r26=1.004, e26=0.981, g27r=0.040, g27e=0.015, spend=0.950, auth=1.035),
 }
 
 

@@ -124,8 +124,8 @@ years. Regenerate with `python scripts/analysis/kpi_scorecard.py`.
 the General Fund and its policy KPIs under conservative/base/optimistic scenarios,
 showing uncertain quantities as bands. After the FY2020–23 trough the fund balance
 has rebuilt (FY2024 assigned+unassigned $14.88M), so the base case has **solvency
-recovering toward ~10% by FY2026 and ~12% by FY2027** — climbing back toward, but
-not yet inside, the 10–15% target — while the UAB cushion stays below the 5–10%
+recovering toward ~10% by FY2026 and ~13% by FY2027** — climbing back toward, and
+into the bottom of, the 10–15% target — while the UAB cushion stays below the 5–10%
 target. A single soft revenue year pulls solvency back toward the 5% floor
 (conservative band). Assumptions are tracked in `data/normalized/assumptions.csv`;
 regenerate with `python scripts/analysis/gf_forecast.py`.
@@ -133,11 +133,14 @@ regenerate with `python scripts/analysis/gf_forecast.py`.
 **Monthly liquidity forecast.** [docs/liquidity.md](docs/liquidity.md) projects
 month-end General Fund cash through June 2027 from the latest known balance, using
 the FY2025 monthly seasonality (extracted to `monthly_actuals.csv`, reconciled to
-the published totals). ICCSD collects property tax in two waves (October, April),
-so cash troughs in **early fall**: the base case bottoms at **~$4.4M in Sept 2026**
-and the conservative case at **~$1.0M** — effectively out of cash before the
-October wave. That trough is where the property-sale proceeds and interfund loans
-matter most. Regenerate with `python scripts/analysis/liquidity_forecast.py`.
+the published totals) plus the board-authorized interfund cash flows
+(`interfund_loans.csv`, `known_events.csv`). ICCSD collects property tax in two
+waves (October, April), so cash troughs in **early fall**. Operating-only, the base
+case bottoms at ~$4.7M in Sept 2026; but once the **$7.32M the GF lends SAVE** in
+May (out until Oct 1) is layered in, the General Fund goes **negative in Sept 2026
+(−$2.6M base, −$6.2M conservative)** — which is why the board lined up a **$3M
+anticipatory warrant**. The district's own COO memo independently flags the same
+September 2026 risk. Regenerate with `python scripts/analysis/liquidity_forecast.py`.
 
 Roadmap (see the full project plan):
 
