@@ -59,7 +59,17 @@ IGNORE_NAMES = {
     "provenance.md",
     "blank.txt",
     "text.txt",
+    # Per-folder board-packet metadata (generated indices / structure), not
+    # standalone source documents.
+    "meeting.json",
+    "agenda.md",
+    "manifest.md",
 }
+
+# A ".txt" that sits next to a same-stem document is that document's extracted
+# text (a sidecar), not a separate source document — skip it when inventorying.
+SIDECAR_EXTS = {".txt"}
+DOCUMENT_EXTS = {".pdf", ".docx", ".doc", ".xlsx", ".xls"}
 
 # Document types we treat as "not yet meaningfully classified".
 UNKNOWN_TYPES = {"", "generic_pdf", "generic_excel"}
@@ -222,12 +232,21 @@ def load_existing_inventory(inventory_path: Path) -> dict[str, dict]:
     return existing
 
 
+def is_sidecar_text(path: Path) -> bool:
+    """True if ``path`` is the extracted-text sidecar of a same-stem document."""
+    if path.suffix.lower() not in SIDECAR_EXTS:
+        return False
+    return any(path.with_suffix(ext).exists() for ext in DOCUMENT_EXTS)
+
+
 def iter_source_files(raw_dir: Path):
     """Yield source-document paths under ``raw_dir``, skipping ignored files."""
     for path in sorted(raw_dir.rglob("*")):
         if not path.is_file():
             continue
         if path.name.lower() in IGNORE_NAMES or path.name.startswith("."):
+            continue
+        if is_sidecar_text(path):
             continue
         yield path
 

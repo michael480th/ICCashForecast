@@ -132,6 +132,36 @@ def test_build_inventory_skips_metadata_files(repo):
     assert not any(fp.endswith("PROVENANCE.md") for fp in paths)
 
 
+def test_skips_sidecar_text_but_keeps_standalone(repo):
+    p = _paths(repo)
+    folder = p["raw"] / "board_packets" / "2026-05-12"
+    # A PDF with its extracted-text sidecar: the .txt must be skipped.
+    (folder / "F_06_01_AP Board Report.pdf").write_text("pdf bytes")
+    (folder / "F_06_01_AP Board Report.txt").write_text("extracted text")
+    # The fixture transcript .txt has no same-stem document -> kept.
+    rows = bdi.build_inventory(p["raw"], p["inventory"], p["manual"], repo, today="2026-06-06")
+    paths = {r["file_path"] for r in rows}
+    assert any(fp.endswith("F_06_01_AP Board Report.pdf") for fp in paths)
+    assert not any(fp.endswith("F_06_01_AP Board Report.txt") for fp in paths)
+    assert any(fp.endswith("2026-06-09_meeting_transcript.txt") for fp in paths)
+
+
+def test_skips_board_packet_metadata(repo):
+    p = _paths(repo)
+    folder = p["raw"] / "board_packets" / "2026-05-12"
+    (folder / "meeting.json").write_text("{}")
+    (folder / "agenda.md").write_text("# agenda")
+    (folder / "MANIFEST.md").write_text("# manifest")
+    (folder / "transcript.json").write_text("{}")  # real transcript -> kept
+    rows = bdi.build_inventory(p["raw"], p["inventory"], p["manual"], repo, today="2026-06-06")
+    by_path = {r["file_path"]: r for r in rows}
+    assert not any(fp.endswith("meeting.json") for fp in by_path)
+    assert not any(fp.endswith("agenda.md") for fp in by_path)
+    assert not any(fp.endswith("MANIFEST.md") for fp in by_path)
+    tj = next((r for fp, r in by_path.items() if fp.endswith("transcript.json")), None)
+    assert tj is not None and tj["document_type"] == "transcript"
+
+
 def test_build_inventory_infers_date_and_classifies(repo):
     p = _paths(repo)
     rows = bdi.build_inventory(p["raw"], p["inventory"], p["manual"], repo, today="2026-06-06")
