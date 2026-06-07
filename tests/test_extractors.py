@@ -112,6 +112,9 @@ def test_real_q2_monthly_reconciles():
     top2 = sorted(by_month, key=by_month.get, reverse=True)[:2]
     assert set(top2) == {"2024-10", "2025-04"}
 
+
+@pytest.mark.skipif(not Q2_SIDECAR.exists(), reason="Q2 sidecar not present")
+def test_real_q2_numbers():
     pages = [Q2_SIDECAR.read_text(encoding="utf-8")]
     result = qfr.extract(pages)
     assert result["period_end"] == "2025-12-31"
