@@ -112,6 +112,14 @@ ending balance) and `cash_balances.csv` (cash vs. investments by fund group). Th
 extracted figures self-reconcile — the six cash groups sum to the all-funds total
 within rounding. See [scripts/extractors/](scripts/extractors/README.md).
 
+**Financial-KPI scorecard.** [docs/kpi_scorecard.md](docs/kpi_scorecard.md) scores
+ICCSD against the board's own policy targets (701.5R1: solvency 10–15%, UAB 5–10%)
+and the large-Iowa-district peer set, using the ICCSDAdvocacy benchmarking
+(audited ACFRs + Iowa DOM filings). Headline: ICCSD's unspent-authorized-budget
+ratio (2.31%, FY2025) is last of 15 peers (median ~16%) and below target every
+year since FY2020; audited solvency has sat below its 5% floor in three of four
+years. Regenerate with `python scripts/analysis/kpi_scorecard.py`.
+
 Roadmap (see the full project plan):
 
 | Phase | Focus | Status |
