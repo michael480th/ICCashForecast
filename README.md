@@ -98,6 +98,13 @@ for benchmark context. Each imported area carries a `PROVENANCE.md`. **Note:**
 this corpus is annual baselines and revenue drivers — the *monthly* board cash
 reports the forecast ultimately runs on still need to be added from board packets.
 
+The board-packet corpus (14 meetings, Jan–Jun 2026) has been triaged by financial
+relevance: of ~520 documents, ~84 feed the forecast and the rest are governance
+noise (contracts, DPAs, policies). The extraction target list — gold mines grouped
+by the table each feeds — is in
+[docs/board_materials_triage.md](docs/board_materials_triage.md), and those
+classifications are applied via `data/manual/document_classification_manual.csv`.
+
 Roadmap (see the full project plan):
 
 | Phase | Focus | Status |

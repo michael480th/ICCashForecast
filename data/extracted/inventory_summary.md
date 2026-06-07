@@ -2,7 +2,7 @@
 
 - **Total documents:** 655
 - **Duplicate file groups:** 3 (6 files share content with another)
-- **Unknown / generic document type:** 485
+- **Unknown / generic document type:** 427
 - **Missing source URL:** 655
 - **Missing meeting/report date:** 137
 
@@ -10,22 +10,23 @@
 
 | document_type | count |
 |---------------|-------|
-| generic_pdf | 436 |
+| generic_pdf | 379 |
 | audit | 98 |
-| generic_excel | 43 |
+| generic_excel | 42 |
+| accounts_payable_report | 36 |
 | board_packet | 22 |
+| property_sale_document | 14 |
 | transcript | 14 |
+| board_financial_update | 13 |
 | capital_project_update | 9 |
-| board_financial_update | 8 |
+| certified_budget | 8 |
 | (unclassified) | 6 |
-| accounts_payable_report | 5 |
-| quarterly_financial_report | 5 |
-| certified_budget | 3 |
-| interfund_loan_document | 2 |
+| cfo_update | 6 |
+| interfund_loan_document | 3 |
+| monthly_financial_report | 2 |
 | board_minutes | 1 |
 | budget_amendment | 1 |
-| cfo_update | 1 |
-| monthly_financial_report | 1 |
+| quarterly_financial_report | 1 |
 
 ## By status
 
