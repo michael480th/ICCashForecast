@@ -38,8 +38,13 @@ import extract_pdf_text as ept  # noqa: E402
 INVENTORY_PATH = REPO_ROOT / "data" / "extracted" / "document_inventory.csv"
 RD_PATH = REPO_ROOT / "data" / "normalized" / "receipts_disbursements.csv"
 CASH_PATH = REPO_ROOT / "data" / "normalized" / "cash_balances.csv"
+MONTHLY_PATH = REPO_ROOT / "data" / "normalized" / "monthly_actuals.csv"
 
 COMBINED_MARKER = "Combined Statement of Receipts and Disbursements"
+
+# Fiscal-year months in order (July .. June).
+MONTHS = ["July", "August", "September", "October", "November", "December",
+          "January", "February", "March", "April", "May", "June"]
 
 # Canonical fund names for the per-fund Combined Statement (keyed by fund code).
 FUND_NAMES = {
@@ -73,6 +78,10 @@ CASH_FIELDS = [
     "as_of_date", "fund_code", "fund_name", "cash_in_bank", "investments",
     "total_cash_investments", "source_file", "source_page", "extraction_method",
     "confidence", "notes",
+]
+MONTHLY_FIELDS = [
+    "month", "fund_code", "fund_name", "line_item", "type", "amount",
+    "source_file", "source_page", "confidence", "notes",
 ]
 
 
@@ -208,6 +217,68 @@ def parse_cash_detail(pages: list[str]):
 
 
 # --------------------------------------------------------------------------- #
+# General Fund revenue / expenditure by month (seasonality)
+# --------------------------------------------------------------------------- #
+def _fy_month_isos(fy: int) -> list[str]:
+    """ISO YYYY-MM for each fiscal-year month (July fy-1 .. June fy)."""
+    out = []
+    for i in range(12):
+        out.append(f"{fy - 1}-{7 + i:02d}" if i < 6 else f"{fy}-{i - 5:02d}")
+    return out
+
+
+def parse_monthly_gf(pages: list[str]):
+    """Parse the prior-year (complete FY) General Fund revenue & expenditure
+    by-month tables. Returns (rows, source_page, fiscal_year).
+
+    These tables show 12 months (July..June) then Accruals and Total; we keep the
+    first 12 amounts as the monthly series. The "Prior Year" table is the complete
+    fiscal year, so it's the seasonality source. Aggregate ("Total Monthly …")
+    rows are returned with line_item flagged so callers can validate or skip them.
+    """
+    text = "\n".join(pages)
+    lines = text.splitlines()
+    rows: list[dict] = []
+    section = None
+    fy = None
+    capture = False
+    page_no = next((i + 1 for i, p in enumerate(pages)
+                    if "Revenue by Month" in p), None)
+    for ln in lines:
+        s = ln.strip()
+        if s.startswith("General Fund Revenue by Month"):
+            section, capture = "revenue", False
+            continue
+        if s.startswith("General Fund Expenditures by Month"):
+            section, capture = "expenditure", False
+            continue
+        m = re.search(r"Prior Year \(Period Ending 6/30/(\d{4})\)", ln)
+        if m and section:
+            fy, capture = int(m.group(1)), True
+            continue
+        if "Current Year (Period Ending" in ln or s.startswith(("Total YTD", "Prior Year vs")):
+            capture = False
+            continue
+        if not capture or section is None or "$" not in ln:
+            continue
+        label = ln.split("$")[0].strip()
+        if not label or label.lower().startswith(("current year", "fund")):
+            continue
+        chunks = ln.split("$")[1:]
+        if len(chunks) < 12:  # a monthly row has 12 months (+ accruals + total)
+            continue
+        # In these tables a "$ -" / blank month means $0, not a missing value.
+        months = [clean_amount(_strip_trailing_percent(c)) or 0.0 for c in chunks][:12]
+        is_total = label.lower().startswith("total monthly")
+        for iso, amt in zip(_fy_month_isos(fy), months):
+            rows.append({
+                "month": iso, "line_item": label, "type": section,
+                "amount": amt, "is_total": is_total,
+            })
+    return rows, page_no, fy
+
+
+# --------------------------------------------------------------------------- #
 # Public extractor interface
 # --------------------------------------------------------------------------- #
 def can_handle(pages: list[str]) -> bool:
@@ -217,6 +288,7 @@ def can_handle(pages: list[str]) -> bool:
 def extract(pages: list[str]) -> dict:
     rd_rows, rd_page, period_end = parse_combined_statement(pages)
     cash_rows, cash_page, as_of = parse_cash_detail(pages)
+    monthly_rows, monthly_page, monthly_fy = parse_monthly_gf(pages)
     return {
         "period_end": period_end,
         "as_of_date": as_of or period_end,
@@ -224,6 +296,9 @@ def extract(pages: list[str]) -> dict:
         "rd_page": rd_page,
         "cash_balances": cash_rows,
         "cash_page": cash_page,
+        "monthly_gf": monthly_rows,
+        "monthly_page": monthly_page,
+        "monthly_fy": monthly_fy,
     }
 
 
@@ -249,7 +324,8 @@ def _write(path: Path, fields: list[str], rows: list[dict]) -> None:
 
 def main() -> None:
     docs = _candidate_docs(INVENTORY_PATH)
-    rd_all, cash_all = [], []
+    rd_all, cash_all, monthly_all = [], [], []
+    seen_monthly_fy = set()  # the prior-year monthly table repeats across reports
     handled = 0
     for doc in docs:
         pdf = REPO_ROOT / doc["file_path"]
@@ -279,12 +355,27 @@ def main() -> None:
                 "extraction_method": f"{method}+quarterly_financial_report",
                 "confidence": "medium",
             })
+        mfy = result["monthly_fy"]
+        if mfy is not None and mfy not in seen_monthly_fy:
+            seen_monthly_fy.add(mfy)
+            for r in result["monthly_gf"]:
+                if r["is_total"]:
+                    continue  # aggregate row; line items are written individually
+                monthly_all.append({
+                    "month": r["month"], "fund_code": "10", "fund_name": "General Fund",
+                    "line_item": r["line_item"], "type": r["type"], "amount": fmt(r["amount"]),
+                    "source_file": src, "source_page": result["monthly_page"] or "",
+                    "confidence": "medium",
+                    "notes": f"FY{mfy} actual (prior-year table)",
+                })
 
     _write(RD_PATH, RD_FIELDS, rd_all)
     _write(CASH_PATH, CASH_FIELDS, cash_all)
+    _write(MONTHLY_PATH, MONTHLY_FIELDS, monthly_all)
     print(f"Quarterly financial report extractor: handled {handled} document(s).")
     print(f"  receipts_disbursements rows: {len(rd_all)} -> {RD_PATH.relative_to(REPO_ROOT)}")
     print(f"  cash_balances rows:          {len(cash_all)} -> {CASH_PATH.relative_to(REPO_ROOT)}")
+    print(f"  monthly_actuals rows:        {len(monthly_all)} -> {MONTHLY_PATH.relative_to(REPO_ROOT)}")
 
 
 if __name__ == "__main__":

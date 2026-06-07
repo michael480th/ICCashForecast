@@ -130,6 +130,15 @@ target. A single soft revenue year pulls solvency back toward the 5% floor
 (conservative band). Assumptions are tracked in `data/normalized/assumptions.csv`;
 regenerate with `python scripts/analysis/gf_forecast.py`.
 
+**Monthly liquidity forecast.** [docs/liquidity.md](docs/liquidity.md) projects
+month-end General Fund cash through June 2027 from the latest known balance, using
+the FY2025 monthly seasonality (extracted to `monthly_actuals.csv`, reconciled to
+the published totals). ICCSD collects property tax in two waves (October, April),
+so cash troughs in **early fall**: the base case bottoms at **~$4.4M in Sept 2026**
+and the conservative case at **~$1.0M** — effectively out of cash before the
+October wave. That trough is where the property-sale proceeds and interfund loans
+matter most. Regenerate with `python scripts/analysis/liquidity_forecast.py`.
+
 Roadmap (see the full project plan):
 
 | Phase | Focus | Status |

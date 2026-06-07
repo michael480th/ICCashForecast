@@ -94,7 +94,24 @@ def test_can_handle():
 # Integration: real FY26 Q2 report (via committed text sidecar)
 # --------------------------------------------------------------------------- #
 @pytest.mark.skipif(not Q2_SIDECAR.exists(), reason="Q2 sidecar not present")
-def test_real_q2_numbers():
+def test_real_q2_monthly_reconciles():
+    pages = [Q2_SIDECAR.read_text(encoding="utf-8")]
+    rows, page, fy = qfr.parse_monthly_gf(pages)
+    assert fy == 2025  # prior-year table in the FY26 Q2 report is FY2025
+    items = [r for r in rows if not r["is_total"]]
+    rev = sum(r["amount"] for r in items if r["type"] == "revenue")
+    exp = sum(r["amount"] for r in items if r["type"] == "expenditure")
+    # Line items reconcile to the published FY2025 totals (within rounding).
+    assert abs(rev - 208_583_924) < 10
+    assert abs(exp - 208_850_928) < 10
+    # Property tax drives the two big revenue months: October and April.
+    by_month = {}
+    for r in items:
+        if r["type"] == "revenue":
+            by_month[r["month"]] = by_month.get(r["month"], 0) + r["amount"]
+    top2 = sorted(by_month, key=by_month.get, reverse=True)[:2]
+    assert set(top2) == {"2024-10", "2025-04"}
+
     pages = [Q2_SIDECAR.read_text(encoding="utf-8")]
     result = qfr.extract(pages)
     assert result["period_end"] == "2025-12-31"
