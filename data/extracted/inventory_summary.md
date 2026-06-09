@@ -1,9 +1,9 @@
 # Inventory summary
 
-- **Total documents:** 655
+- **Total documents:** 657
 - **Duplicate file groups:** 3 (6 files share content with another)
 - **Unknown / generic document type:** 427
-- **Missing source URL:** 655
+- **Missing source URL:** 657
 - **Missing meeting/report date:** 137
 
 ## By document type
@@ -15,9 +15,9 @@
 | generic_excel | 42 |
 | accounts_payable_report | 36 |
 | board_packet | 22 |
+| board_financial_update | 15 |
 | property_sale_document | 14 |
 | transcript | 14 |
-| board_financial_update | 13 |
 | capital_project_update | 9 |
 | certified_budget | 8 |
 | (unclassified) | 6 |
@@ -32,4 +32,4 @@
 
 | status | count |
 |--------|-------|
-| new | 655 |
+| new | 657 |
