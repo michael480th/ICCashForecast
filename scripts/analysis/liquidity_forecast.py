@@ -169,7 +169,13 @@ def main():
           "cost of an FY26 audit note); (4) the $3M warrant.",
           "- **Bottom line:** ICCSD can likely cover the fall trough, but only by "
           "actively managing interfund timing and one-time inflows — there is little "
-          "to no margin. That is the liquidity-timing crunch, quantified.\n"]
+          "to no margin. That is the liquidity-timing crunch, quantified.",
+          "- **Capital-funding constraint:** PFM's 6/9/2026 Capital Funding Capacity "
+          "analysis states the District cannot responsibly borrow for capital until "
+          "**no earlier than spring 2028**, and only once *monthly liquidity issues "
+          "are resolved*, the General Fund has *no outstanding interfund loans*, "
+          "audits are timely, and credit is restored to Aa/AA. So this liquidity "
+          "crunch is also gating ~$18.5M of planned PPEL capital investment.\n"]
     OUT_MD.write_text("\n".join(L) + "\n", encoding="utf-8")
 
     print(f"Liquidity forecast -> {OUT_CSV.relative_to(REPO)}, {OUT_MD.relative_to(REPO)}")
