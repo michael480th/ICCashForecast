@@ -119,30 +119,33 @@ def main():
     tr = {s: min(pts, key=lambda x: x[3]) for s, pts in series.items()}
     tr_op = {s: min(pts, key=lambda x: x[2]) for s, pts in series.items()}
 
+    oby, obm, oboc, _ = tr_op["base"]   # operating-only trough (base)
     L = ["# ICCSD General Fund monthly liquidity forecast\n",
          f"Month-end GF cash projected from the latest known balance "
          f"(**${start_cash/1e6:.1f}M** on {start_dt.isoformat()}) through June 2027, "
          f"applying FY2025 monthly seasonality scaled to each scenario, then "
-         f"overlaying the dated interfund cash flows the board has authorized.\n",
-         f"> **Two facts about that ${start_cash/1e6:.0f}M starting balance:** it "
-         f"already includes a **$10M loan from the Health Insurance fund** (received "
-         f"8/2025, due back by 10/1/2026), and in **May 2026 the GF lends SAVE "
-         f"$7.32M** that doesn't return until Oct 1. Real available cash over the "
-         f"summer is lower than the headline.\n",
-         "> Property tax arrives in two waves (**October**, **April**); cash troughs "
-         "in **early fall** — exactly the **September 2026** risk the district's own "
-         "COO memo flags.\n",
+         f"overlaying the board-authorized **$25M revenue anticipation warrant** and "
+         f"the interfund cash flows.\n",
+         f"> **The ${start_cash/1e6:.0f}M starting balance is propped up by borrowing:** "
+         f"it includes a **$10M loan from the Health Insurance fund**, and in May 2026 "
+         f"the GF both lends **SAVE $7.32M** and draws a **$25M warrant** — which, after "
+         f"immediately repaying the $10M insurance loan (with interest) and funding "
+         f"SAVE, leaves ~$7.28M of net reserve in the GF.\n",
+         "> Property tax arrives in two waves (**October**, **April**); on operating "
+         "cash alone the GF dips **below zero in September 2026** — exactly the risk "
+         "the district's COO memo flags, and the reason for the warrant.\n",
          "## Projected cash low points (troughs)\n",
-         "| Scenario | Operating only | **With interfund obligations** |",
+         "| Scenario | Operating only | **With warrant + interfund** |",
          "|---|---|---|"]
     for s in ["conservative", "base", "optimistic"]:
         oy, om, ooc, _ = tr_op[s]
         cy, cm, _, cc = tr[s]
+        oflag = " 🔴" if ooc < 0 else ""
         flag = " 🔴 **negative**" if cc < 0 else (" ⚠️" if cc < 2e6 else "")
-        L.append(f"| {s} | ${ooc/1e6:.1f}M ({MONTH_ABBR[om]} {oy}) | "
+        L.append(f"| {s} | ${ooc/1e6:.1f}M ({MONTH_ABBR[om]} {oy}){oflag} | "
                  f"**${cc/1e6:.1f}M ({MONTH_ABBR[cm]} {cy})**{flag} |")
 
-    L += ["\n## Month-end cash *with interfund obligations* (base, with band)\n",
+    L += ["\n## Month-end cash *with warrant + interfund* (base, with band)\n",
           "| Month | Conservative | Base | Optimistic |", "|---|---|---|---|"]
     lut = {s: {(cy, m): al for cy, m, op, al in pts} for s, pts in series.items()}
     for cy, m, _, _ in series["base"]:
@@ -155,21 +158,24 @@ def main():
     by, bm, _, bc = tr["base"]
     cyy, cmm, _, ccc = tr["conservative"]
     L += ["\n## Read\n",
-          f"- **With the interfund loans, the base case bottoms at ${bc/1e6:.1f}M "
-          f"in {MONTH_ABBR[bm]} {by}**" +
-          (" — the General Fund goes negative" if bc < 0 else "") +
-          f", because the $7.32M lent to SAVE is still out when fall spending peaks.",
-          f"- **Conservative: ${ccc/1e6:.1f}M ({MONTH_ABBR[cmm]} {cyy})** — a clear "
-          f"cash shortfall. This is why the board authorized a **$3M anticipatory "
-          f"warrant** (a short-term borrowing backstop, undrawn as of spring 2026).",
-          "- **The levers that close the gap:** (1) SAVE repays the $7.32M by Oct 1; "
-          "(2) the **1725 N. Dodge sale proceeds** land in the GF (amount TBD — the "
-          "COO memo warns September gets harder if it doesn't close); (3) **postponing "
-          "the $10M Insurance repayment** past June 30 preserves liquidity (at the "
-          "cost of an FY26 audit note); (4) the $3M warrant.",
-          "- **Bottom line:** ICCSD can likely cover the fall trough, but only by "
-          "actively managing interfund timing and one-time inflows — there is little "
-          "to no margin. That is the liquidity-timing crunch, quantified.",
+          f"- **On operating cash alone, the GF goes negative — ${oboc/1e6:.1f}M in "
+          f"{MONTH_ABBR[obm]} {oby}** (base). That structural fall gap is what the $25M "
+          f"warrant exists to bridge.",
+          f"- **The warrant works:** it lifts the September 2026 low to roughly "
+          f"${lut['base'][(2026,9)]/1e6:.0f}M, comfortably positive. But it is borrowed "
+          f"money — repaid ~$26.5M in spring 2027.",
+          f"- **The real low point moves to {MONTH_ABBR[bm]} {by}: ${bc/1e6:.1f}M (base), "
+          f"${ccc/1e6:.1f}M (conservative)** — right after the warrant is repaid and "
+          f"before the next cycle. PFM's own estimate of June 30, 2027 cash (~$9.95M = "
+          f"16 days) is *insufficient to cover July 2027 payroll (~$11.8M)* — which is "
+          f"why a **second ~$10M warrant is already planned for FY2027**.",
+          "- **The levers:** SAVE's $7.76M repayment (Oct 1), the **1725 N. Dodge sale "
+          "proceeds** (amount TBD), and ultimately the next warrant. The 1725 N. Dodge "
+          "amount is the biggest unmodeled upside.",
+          "- **Bottom line:** the warrants and interfund loans successfully manage "
+          "*liquidity* — the GF stays positive — but only by rolling short-term debt "
+          "year over year. The recurring trough is the symptom; the **structural "
+          "operating deficit** (see the solvency forecast) is the cause.",
           "- **Capital-funding constraint:** PFM's 6/9/2026 Capital Funding Capacity "
           "analysis states the District cannot responsibly borrow for capital until "
           "**no earlier than spring 2028**, and only once *monthly liquidity issues "

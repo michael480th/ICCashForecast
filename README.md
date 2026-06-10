@@ -120,27 +120,28 @@ ratio (2.31%, FY2025) is last of 15 peers (median ~16%) and below target every
 year since FY2020; audited solvency has sat below its 5% floor in three of four
 years. Regenerate with `python scripts/analysis/kpi_scorecard.py`.
 
-**Forward forecast (FY2026–FY2027).** [docs/forecast.md](docs/forecast.md) projects
-the General Fund and its policy KPIs under conservative/base/optimistic scenarios,
-showing uncertain quantities as bands. After the FY2020–23 trough the fund balance
-has rebuilt (FY2024 assigned+unassigned $14.88M), so the base case has **solvency
-recovering toward ~10% by FY2026 and ~13% by FY2027** — climbing back toward, and
-into the bottom of, the 10–15% target — while the UAB cushion stays below the 5–10%
-target. A single soft revenue year pulls solvency back toward the 5% floor
-(conservative band). Assumptions are tracked in `data/normalized/assumptions.csv`;
-regenerate with `python scripts/analysis/gf_forecast.py`.
+**Forward forecast (FY2026–FY2029).** [docs/forecast.md](docs/forecast.md) projects
+the General Fund and its policy KPIs, with **PFM's own 7-year cash-flow model as the
+base case** (the district advisor's authoritative projection). PFM projects ~$225M
+of FY2026 spending — vs. the $212M printed budget — i.e. a **~$6M operating deficit**,
+not a surplus. So the base case has **solvency at ~0.5% in FY2026 and below the 5%
+floor every year through FY2029** (crawling back to only ~3.5%), with **FY2026 UAB
+near zero/negative** (spending at or beyond the legal authority). The fund-balance
+"rebuild" to ~$14.9M at FY2024 was temporary — driven by an unusually low FY2024
+spend — and erodes as spending snaps back. The warrants/interfund loans manage
+*liquidity* but do not fix this *solvency* gap. Regenerate with
+`python scripts/analysis/gf_forecast.py`.
 
 **Monthly liquidity forecast.** [docs/liquidity.md](docs/liquidity.md) projects
 month-end General Fund cash through June 2027 from the latest known balance, using
 the FY2025 monthly seasonality (extracted to `monthly_actuals.csv`, reconciled to
-the published totals) plus the board-authorized interfund cash flows
-(`interfund_loans.csv`, `known_events.csv`). ICCSD collects property tax in two
-waves (October, April), so cash troughs in **early fall**. Operating-only, the base
-case bottoms at ~$4.7M in Sept 2026; but once the **$7.32M the GF lends SAVE** in
-May (out until Oct 1) is layered in, the General Fund goes **negative in Sept 2026
-(−$2.6M base, −$6.2M conservative)** — which is why the board lined up a **$3M
-anticipatory warrant**. The district's own COO memo independently flags the same
-September 2026 risk. Regenerate with `python scripts/analysis/liquidity_forecast.py`.
+the published totals) plus the **$25M revenue anticipation warrant** and interfund
+flows (`known_events.csv`). On operating cash alone the GF dips **below zero in
+September 2026** (the COO memo flags the same risk); the **$25M warrant bridges that
+trough**, but it is repaid ~$26.5M in spring 2027, so the real low point moves to
+**June 2027 (~$0.4M base, −$7.2M conservative)** — insufficient for July payroll,
+which is why PFM already plans a **second ~$10M warrant**. The district is on a
+warrant treadmill. Regenerate with `python scripts/analysis/liquidity_forecast.py`.
 
 Roadmap (see the full project plan):
 
