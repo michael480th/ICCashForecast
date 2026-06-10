@@ -21,19 +21,18 @@ GH = "https://github.com/michael480th/ICCashForecast"
 REPORTS = {
     "kpi_scorecard.md": ("kpi_scorecard.html", "KPI Scorecard",
                          "ICCSD vs. its own board targets and large Iowa peers"),
-    "forecast.md": ("forecast.html", "Forecast",
-                    "General Fund & solvency, reconciled to PFM's projection"),
+    # forecast.html is built separately by build_forecast_page.py (custom charts).
     "liquidity.md": ("liquidity.html", "Liquidity",
                      "Month-by-month General Fund cash, with the warrant package"),
     "board_materials_triage.md": ("board_materials_triage.html", "Board Materials",
                                   "Which board documents feed the forecast — and which are noise"),
 }
+# docs/ pages live one level below the root home page (index.html = bond rating).
 NAV_ITEMS = [
-    ("index.html", "Home"),
-    ("kpi_scorecard.html", "KPI Scorecard"),
+    ("../index.html", "Bond Rating"),
     ("forecast.html", "Forecast"),
     ("liquidity.html", "Liquidity"),
-    ("bond_rating_assessment.html", "Bond Rating"),
+    ("kpi_scorecard.html", "KPI Scorecard"),
     ("board_materials_triage.html", "Board Materials"),
     (GH, "GitHub ↗"),
 ]
@@ -144,7 +143,7 @@ def nav(active: str) -> str:
     links = "".join(
         f'<a href="{href}"{" aria-current=page" if href == active else ""}>{label}</a>'
         for href, label in NAV_ITEMS)
-    return ('<nav class="topnav"><a class="brand" href="index.html">ICCashForecast</a>'
+    return ('<nav class="topnav"><a class="brand" href="../index.html">ICCashForecast</a>'
             f'<div class="links">{links}</div></nav>')
 
 
@@ -270,15 +269,8 @@ pipeline turns source PDFs into canonical data and forecasts:</p>
 def main():
     DOCS.mkdir(exist_ok=True)
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")
-
-    (DOCS / "index.html").write_text(
-        page("ICCSD General Fund Financial Forecast — ICCashForecast", LANDING_BODY, "index.html",
-             hero_title="ICCSD General Fund Financial Forecast",
-             hero_sub="A transparent, source-traced cash forecast for the Iowa City Community "
-                      "School District."),
-        encoding="utf-8")
-    print("wrote docs/index.html, docs/.nojekyll")
-
+    # The site home page is the repo-root index.html (bond-rating assessment);
+    # this script builds the supporting docs/ report pages.
     for md_name, (html_name, _label, sub) in REPORTS.items():
         src = DOCS / md_name
         if not src.exists():
