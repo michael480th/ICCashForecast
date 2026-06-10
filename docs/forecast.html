@@ -1,22 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ICCSD General Fund forward forecast (FY2026–FY2029) — ICCashForecast</title>
-<link rel="stylesheet" href="site.css">
-</head>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ICCSD General Fund Forecast — ICCashForecast</title>
+<style>
+/* ICCashForecast — shared site styles */
+:root{
+  --ink:#1a2230; --muted:#5b6675; --line:#e3e7ee; --bg:#f6f8fb; --card:#fff;
+  --green:#1f9d68; --green-bg:#e7f6ee; --yellow:#caa12a; --yellow-bg:#fbf4dc;
+  --orange:#d9822b; --orange-bg:#fbeede; --red:#c64236; --red-bg:#fae9e7;
+  --gray:#8a93a3; --gray-bg:#eef1f5; --blue:#2c5fb3; --blue-bg:#e9f0fb;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px 64px;}
+
+/* top nav */
+.topnav{background:#15203a;color:#fff;position:sticky;top:0;z-index:10;
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;padding:11px 20px;}
+.topnav .brand{font-weight:800;color:#fff;text-decoration:none;font-size:16px;margin-right:auto;letter-spacing:-.2px}
+.topnav .links{display:flex;flex-wrap:wrap;gap:4px 16px}
+.topnav a{color:#c7d6ef;text-decoration:none;font-size:14px}
+.topnav a:hover{color:#fff}
+
+/* hero header */
+header.hero{background:linear-gradient(135deg,#1d2b4a,#2c5fb3);color:#fff;padding:40px 0 34px;}
+header.hero .wrap{padding-bottom:0}
+h1{margin:0 0 6px;font-size:27px;line-height:1.25;letter-spacing:-.2px}
+header.hero p{margin:4px 0 0;color:#cfe0f7;font-size:15px}
+.kicker{text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:#9db8e4;margin:0 0 10px;font-weight:600}
+
+h2{font-size:20px;margin:38px 0 10px;letter-spacing:-.2px}
+h3{font-size:15px;margin:20px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+h4{font-size:15px;margin:16px 0 4px}
+a{color:var(--blue)}
+p{margin:10px 0}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0;
+  box-shadow:0 1px 2px rgba(20,30,50,.04)}
+.disclaimer{background:#fff8e9;border:1px solid #f0d896;border-radius:12px;padding:16px 20px;margin:22px 0;font-size:14.5px}
+.disclaimer b{color:#9a6a00}
+.q{background:var(--blue-bg);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:14px 20px;margin:16px 0}
+
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+td.w{white-space:nowrap;font-variant-numeric:tabular-nums}
+code{background:#eef1f5;border-radius:5px;padding:1px 5px;font-size:13px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+blockquote{margin:14px 0;background:var(--blue-bg);border-left:4px solid var(--blue);
+  border-radius:0 10px 10px 0;padding:10px 18px;color:#23344f}
+blockquote p{margin:6px 0}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.p-green{background:var(--green-bg);color:var(--green)}
+.p-yellow{background:var(--yellow-bg);color:#9a7a10}
+.p-orange{background:var(--orange-bg);color:var(--orange)}
+.p-red{background:var(--red-bg);color:var(--red)}
+.p-gray{background:var(--gray-bg);color:var(--gray)}
+.p-blue{background:var(--blue-bg);color:var(--blue)}
+
+/* probability bars (bond rating page) */
+.bar{display:flex;align-items:center;gap:12px;margin:8px 0}
+.bar .lbl{flex:0 0 188px;font-size:14px}
+.bar .lbl small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+.bar .track{flex:1;background:#eef1f5;border-radius:6px;height:26px;position:relative;overflow:hidden}
+.bar .fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;
+  padding-right:8px;color:#fff;font-size:13px;font-weight:700;min-width:34px}
+.f-green{background:var(--green)} .f-blue{background:var(--blue)}
+.f-yellow{background:var(--yellow)} .f-orange{background:var(--orange)} .f-gray{background:var(--gray)}
+.callout{background:var(--green-bg);border:1px solid #bfe6cf;border-radius:12px;padding:18px 22px;margin:18px 0}
+.callout .big{font-size:30px;font-weight:800;color:#15784f;letter-spacing:-.5px}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.two .card{margin:0}
+.up{border-top:3px solid var(--green)} .down{border-top:3px solid var(--red)}
+ul,ol{margin:8px 0;padding-left:20px} li{margin:5px 0}
+.scale{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.scale span{padding:5px 10px;border-radius:7px;font-size:13px;font-weight:700}
+
+/* landing-page finding cards */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+.finding{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+  box-shadow:0 1px 2px rgba(20,30,50,.04);display:flex;flex-direction:column}
+.finding .num{font-size:26px;font-weight:800;letter-spacing:-.5px;margin:2px 0 2px}
+.finding .lab{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
+.finding p{font-size:14px;color:#384356;margin:6px 0 10px}
+.finding a{font-size:13.5px;font-weight:600;text-decoration:none;margin-top:auto}
+.n-red{color:var(--red)} .n-orange{color:var(--orange)} .n-blue{color:var(--blue)} .n-green{color:var(--green)}
+
+.content :first-child{margin-top:6px}
+
+/* ribbon: two featured tiles at the top of the forecast page */
+.ribbon-band{background:var(--blue-bg);border:1px solid #d3e0f5;border-radius:14px;padding:13px;margin:20px 0 26px}
+.ribbon{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ribbon .tile{display:block;text-decoration:none;color:inherit;background:var(--card);
+  border:1px solid var(--line);border-radius:11px;padding:16px 18px;transition:border-color .12s,box-shadow .12s}
+.ribbon .tile:hover{border-color:var(--blue);box-shadow:0 2px 10px rgba(30,60,120,.10)}
+.ribbon .tile.accent{border-left:4px solid var(--blue)}
+.ribbon .eyebrow{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:700}
+.ribbon .h{font-size:17px;font-weight:800;margin:4px 0 3px;letter-spacing:-.2px}
+.ribbon .sub{font-size:13.5px;color:#384356;margin:0}
+.ribbon .go{font-size:13px;color:var(--blue);font-weight:700;margin-top:9px;display:inline-block}
+
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:36px;padding-top:18px}
+.src{font-size:13px;color:var(--muted)}
+@media(max-width:620px){.two,.grid{grid-template-columns:1fr}.bar .lbl{flex-basis:130px}}
+
+.chart{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px 8px;margin:14px 0;
+  box-shadow:0 1px 2px rgba(20,30,50,.04)}
+.chart h3{margin:0 0 2px;color:var(--ink);text-transform:none;letter-spacing:0;font-size:16px}
+.chart .sub{color:var(--muted);font-size:13px;margin:0 0 8px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:#384356;margin:6px 0 18px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:14px;height:10px;border-radius:2px;display:inline-block}
+.legend i.bandkey{background:linear-gradient(#2c5fb3,#2c5fb3);opacity:.22;border:1px solid #2c5fb3}
+.two-up{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.two-up .chart{margin:0}
+@media(max-width:720px){.two-up{grid-template-columns:1fr}}
+</style></head>
 <body>
-<nav class="topnav"><a class="brand" href="index.html">ICCashForecast</a><div class="links"><a href="index.html">Home</a><a href="kpi_scorecard.html">KPI Scorecard</a><a href="forecast.html" aria-current=page>Forecast</a><a href="liquidity.html">Liquidity</a><a href="bond_rating_assessment.html">Bond Rating</a><a href="board_materials_triage.html">Board Materials</a><a href="https://github.com/michael480th/ICCashForecast">GitHub ↗</a></div></nav><header class="hero"><div class="wrap"><p class="kicker">ICCashForecast &middot; unofficial analysis</p><h1>ICCSD General Fund forward forecast (FY2026–FY2029)</h1><p>General Fund & solvency, reconciled to PFM's projection</p></div></header><div class="wrap"><main class="content"><p>Forecast of the General Fund and its two board-policy (701.5R1) KPIs. The <strong>base case is PFM's own 7-year GF cash-flow model</strong> (the district advisor's authoritative projection); conservative/optimistic flex revenue and expenditure around it. Uncertain quantities are shown as a band.</p>
-<blockquote><p><strong>This supersedes the earlier budget-based forecast.</strong> The printed FY2026 budget showed a ~+$6M surplus; PFM projects ~$225.1M of FY2026 spending (vs. the $212.1M budget) — a <strong>~$6M operating deficit</strong>. That single change pulls the whole solvency path down.</p></blockquote>
-<blockquote><p><strong>Caveats.</strong> FY2024+ are unaudited. The assigned+unassigned roll is anchored on the FY2024 Certified Annual Report ($14.88M) with ~±$3M slack; read solvency within ~±1.5 pts. FY2026 max authorized budget (for UAB) is estimated.</p></blockquote>
-<h2>Solvency ratio — trajectory vs. board target (10–15%, 5% floor)</h2>
-<table><thead><tr><th>Fiscal year</th><th>Conservative</th><th>Base</th><th>Optimistic</th></tr></thead><tbody><tr><td>FY2020 (audited)</td><td>—</td><td>4.21%</td><td>—</td></tr><tr><td>FY2021 (audited)</td><td>—</td><td>6.35%</td><td>—</td></tr><tr><td>FY2022 (audited)</td><td>—</td><td>2.82%</td><td>—</td></tr><tr><td>FY2023 (audited)</td><td>—</td><td>2.45%</td><td>—</td></tr><tr><td>FY2024 (CAR)</td><td>—</td><td>7.49%</td><td>—</td></tr><tr><td>FY2025 (est.)</td><td>—</td><td>4.09%</td><td>—</td></tr><tr><td><strong>FY2026 (PFM proj.)</strong></td><td>-2.15%</td><td><strong>0.50%</strong></td><td>4.20%</td></tr><tr><td><strong>FY2027 (PFM proj.)</strong></td><td>-4.03%</td><td><strong>1.18%</strong></td><td>8.39%</td></tr><tr><td><strong>FY2028 (PFM proj.)</strong></td><td>-5.28%</td><td><strong>2.41%</strong></td><td>13.00%</td></tr><tr><td><strong>FY2029 (PFM proj.)</strong></td><td>-6.64%</td><td><strong>3.52%</strong></td><td>17.50%</td></tr></tbody></table>
-<h2>Unspent Authorized Budget ratio — vs. board target (5–10%)</h2>
-<table><thead><tr><th>Fiscal year</th><th>Conservative</th><th>Base</th><th>Optimistic</th></tr></thead><tbody><tr><td>FY2025 (actual)</td><td>—</td><td>2.31%</td><td>—</td></tr><tr><td><strong>FY2026 (est.)</strong></td><td>-2.40%</td><td><strong>-1.39%</strong></td><td>1.65%</td></tr></tbody></table>
-<p>With PFM's ~$225M spend against ~$222M of estimated authority, the FY2026 UAB is <strong>roughly zero to negative</strong> — i.e. ICCSD is spending at or beyond its legal authority, as it did in FY2023 (−1.21%). Far below the 5–10% target and still last among large Iowa peers.</p>
-<h2>How the year ends — the bottom line</h2>
-<ul><li><strong>FY2026 operating result (base/PFM):</strong> <strong>−$6.0M</strong> — a deficit, not the surplus the printed budget implied.</li><li><strong>FY2026 assigned+unassigned fund balance:</strong> ~$1.1M (base) — a thin sliver, down from ~$14.9M at FY2024.</li><li><strong>FY2026 solvency ratio:</strong> base <strong>0.50%</strong> (band -2.15–4.20%) — <strong>far below the 5% floor</strong>, let alone the 10–15% target.</li><li><strong>FY2026 UAB:</strong> roughly <strong>zero to negative</strong> — at/over the legal spending limit.</li></ul>
-<p><strong>Read:</strong> the FY2024 fund-balance rebuild (to ~$14.9M, solvency ~7.5%) was temporary — driven by an unusually low FY2024 spend ($198M). As spending snapped back ($212M FY2025, $225M FY2026), the cushion eroded. On PFM's numbers the General Fund ends FY2026 essentially at zero unassigned balance and stays <strong>below its 5% solvency floor every year through FY2029</strong>, only crawling back toward ~3.5%. The district does not return to its target band within the forecast horizon. This is a structural operating-margin problem layered on top of the cash-timing crunch — the warrants and interfund loans manage <em>liquidity</em>, but they do not fix the <em>solvency</em> gap.</p></main><footer><p><b>About.</b> ICCashForecast is an <b>unofficial</b> analysis project that extracts Iowa City Community School District financial data from public records and builds a transparent General Fund cash forecast. It is <b>not affiliated</b> with ICCSD, Moody&rsquo;s, S&amp;P, or PFM. Figures are estimates carrying material uncertainty; nothing here is investment advice.</p><p class="src">Sources: ICCSD audited ACFRs, Iowa DOM filings, and PFM board presentations. Built from the <a href="https://github.com/michael480th/ICCashForecast">ICCashForecast repository</a>. Last generated 2026-06-10.</p></footer></div>
-</body>
-</html>
+<nav class="topnav"><a class="brand" href="../index.html">ICCashForecast</a><div class="links"><a href="../index.html">Bond Rating</a><a href="forecast.html" aria-current=page>Forecast</a><a href="liquidity.html">Liquidity</a><a href="kpi_scorecard.html">KPI Scorecard</a><a href="board_materials_triage.html">Board Materials</a><a href="https://github.com/michael480th/ICCashForecast">GitHub ↗</a></div></nav>
+<header class="hero"><div class="wrap">
+<p class="kicker">ICCashForecast &middot; unofficial analysis</p>
+<h1>ICCSD General Fund Forecast</h1>
+<p>The district&rsquo;s finances over time, and this model&rsquo;s range of expected outcomes.</p>
+</div></header>
+<div class="wrap">
+
+<div class="callout"><div>The shape of it</div>
+<p style="margin:6px 0 0">ICCSD runs a <b>structural operating deficit</b> on PFM&rsquo;s numbers — expenses pull
+ahead of revenue — so the General Fund&rsquo;s cushion stays thin and its KPIs sit <b>below the board&rsquo;s
+own targets through FY2029</b>. The shaded plume shows how the range widens the further out we look:
+even the optimistic edge only re-enters the solvency target late, while the conservative edge goes negative.</p></div>
+
+<div class="legend"><span><i style="background:#1a2230"></i>Actual / audited</span><span><i style="background:#2c5fb3"></i>Base case (PFM)</span><span><i class="bandkey"></i>Range: conservative ↔ optimistic</span><span><i style="background:#e7f6ee;border:1px solid #bfe6cf"></i>Board target</span></div>
+
+<h2>Financials over time</h2>
+
+<div class="chart"><h3>Revenue vs. expenditures</h3>
+<p class="sub">General Fund, $ millions. FY2023&ndash;25 actual/estimated; FY2026&ndash;29 base case (PFM).</p>
+<svg viewBox="0 0 760 326" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" font-family="inherit"><line x1="56" y1="296.0" x2="742" y2="296.0" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="300.0" text-anchor="end" font-size="11" fill="#5b6675">$190M</text><line x1="56" y1="239.6" x2="742" y2="239.6" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="243.6" text-anchor="end" font-size="11" fill="#5b6675">$200M</text><line x1="56" y1="183.2" x2="742" y2="183.2" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="187.2" text-anchor="end" font-size="11" fill="#5b6675">$210M</text><line x1="56" y1="126.8" x2="742" y2="126.8" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="130.8" text-anchor="end" font-size="11" fill="#5b6675">$220M</text><line x1="56" y1="70.4" x2="742" y2="70.4" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="74.4" text-anchor="end" font-size="11" fill="#5b6675">$230M</text><line x1="56" y1="14.0" x2="742" y2="14.0" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="18.0" text-anchor="end" font-size="11" fill="#5b6675">$240M</text><text x="56.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’23</text><text x="170.3" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’24</text><text x="284.7" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’25</text><text x="399.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’26</text><text x="513.3" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’27</text><text x="627.7" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’28</text><text x="742.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’29</text><line x1="399.0" y1="14" x2="399.0" y2="296" stroke="#c7cedb" stroke-width="1" stroke-dasharray="3 3"/><text x="404.0" y="25" font-size="10" fill="#5b6675">projected →</text><polygon points="56.0,186.0 170.3,202.9 284.7,173.0 399.0,132.0 513.3,102.4 627.7,70.0 742.0,45.3 742.0,60.0 627.7,85.6 513.3,110.8 399.0,98.1 284.7,171.9 170.3,249.8 56.0,195.0" fill="#c64236" fill-opacity="0.07"/><polyline points="56.0,195.0 170.3,249.8 284.7,171.9 399.0,98.1 513.3,110.8 627.7,85.6 742.0,60.0" fill="none" stroke="#c64236" stroke-width="2.5"/><polyline points="56.0,186.0 170.3,202.9 284.7,173.0 399.0,132.0 513.3,102.4 627.7,70.0 742.0,45.3" fill="none" stroke="#1f9d68" stroke-width="2.5"/><circle cx="56.0" cy="186.0" r="3.2" fill="#1f9d68"/><circle cx="170.3" cy="202.9" r="3.2" fill="#1f9d68"/><circle cx="284.7" cy="173.0" r="3.2" fill="#1f9d68"/><circle cx="399.0" cy="132.0" r="3.2" fill="#1f9d68"/><circle cx="513.3" cy="102.4" r="3.2" fill="#1f9d68"/><circle cx="627.7" cy="70.0" r="3.2" fill="#1f9d68"/><circle cx="742.0" cy="45.3" r="3.2" fill="#1f9d68"/><circle cx="56.0" cy="195.0" r="3.2" fill="#c64236"/><circle cx="170.3" cy="249.8" r="3.2" fill="#c64236"/><circle cx="284.7" cy="171.9" r="3.2" fill="#c64236"/><circle cx="399.0" cy="98.1" r="3.2" fill="#c64236"/><circle cx="513.3" cy="110.8" r="3.2" fill="#c64236"/><circle cx="627.7" cy="85.6" r="3.2" fill="#c64236"/><circle cx="742.0" cy="60.0" r="3.2" fill="#c64236"/><text x="742.0" y="35.3" text-anchor="middle" font-size="11" font-weight="700" fill="#1f9d68">Revenue</text><text x="742.0" y="76.0" text-anchor="middle" font-size="11" font-weight="700" fill="#c64236">Expenses</text><text x="399.0" y="99.6" text-anchor="middle" font-size="10.5" fill="#c64236" font-weight="700">FY26: −$6M</text></svg></div>
+
+<div class="chart"><h3>General Fund balance &mdash; the plume</h3>
+<p class="sub">Assigned + unassigned fund balance, $ millions. Band = conservative to optimistic.</p>
+<svg viewBox="0 0 760 326" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" font-family="inherit"><line x1="56" y1="281.9" x2="742" y2="281.9" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="285.9" text-anchor="end" font-size="11" fill="#5b6675">$-15M</text><line x1="56" y1="211.4" x2="742" y2="211.4" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="215.4" text-anchor="end" font-size="11" fill="#5b6675">$0M</text><line x1="56" y1="140.9" x2="742" y2="140.9" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="144.9" text-anchor="end" font-size="11" fill="#5b6675">$15M</text><line x1="56" y1="70.4" x2="742" y2="70.4" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="74.4" text-anchor="end" font-size="11" fill="#5b6675">$30M</text><text x="56.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’23</text><text x="170.3" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’24</text><text x="284.7" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’25</text><text x="399.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’26</text><text x="513.3" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’27</text><text x="627.7" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’28</text><text x="742.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’29</text><line x1="399.0" y1="14" x2="399.0" y2="296" stroke="#c7cedb" stroke-width="1" stroke-dasharray="3 3"/><text x="404.0" y="25" font-size="10" fill="#5b6675">projected →</text><line x1="56" y1="211.4" x2="742" y2="211.4" stroke="#aab2c0" stroke-width="1" stroke-dasharray="2 3"/><polygon points="284.7,172.2 399.0,232.4 513.3,251.7 627.7,265.6 742.0,280.7 742.0,24.8 627.7,75.3 513.3,125.8 399.0,169.5 284.7,172.2" fill="#2c5fb3" fill-opacity="0.16" stroke="none"/><polyline points="284.7,172.2 399.0,169.5 513.3,125.8 627.7,75.3 742.0,24.8" fill="none" stroke="#2c5fb3" stroke-width="1" stroke-dasharray="4 3"/><polyline points="284.7,172.2 399.0,232.4 513.3,251.7 627.7,265.6 742.0,280.7" fill="none" stroke="#2c5fb3" stroke-width="1" stroke-dasharray="4 3"/><polyline points="284.7,172.2 399.0,206.4 513.3,199.4 627.7,186.3 742.0,174.1" fill="none" stroke="#2c5fb3" stroke-width="2.8"/><polyline points="56.0,188.1 170.3,141.5 284.7,172.2" fill="none" stroke="#1a2230" stroke-width="2.8"/><circle cx="56.0" cy="188.1" r="3.2" fill="#1a2230"/><circle cx="170.3" cy="141.5" r="3.2" fill="#1a2230"/><circle cx="284.7" cy="172.2" r="3.2" fill="#1a2230"/><circle cx="284.7" cy="172.2" r="3.2" fill="#2c5fb3"/><circle cx="399.0" cy="206.4" r="3.2" fill="#2c5fb3"/><circle cx="513.3" cy="199.4" r="3.2" fill="#2c5fb3"/><circle cx="627.7" cy="186.3" r="3.2" fill="#2c5fb3"/><circle cx="742.0" cy="174.1" r="3.2" fill="#2c5fb3"/><text x="742.0" y="16.8" text-anchor="end" font-size="11" font-weight="700" fill="#1f9d68">$40M</text><text x="742.0" y="178.1" text-anchor="end" font-size="11" font-weight="700" fill="#2c5fb3">$8M</text><text x="742.0" y="294.7" text-anchor="end" font-size="11" font-weight="700" fill="#c64236">$-15M</text></svg></div>
+
+<h2>Key financial indicators (KPIs) over time</h2>
+
+<div class="chart"><h3>Solvency ratio vs. board target</h3>
+<p class="sub">Unrestricted GF balance &divide; (revenue &minus; AEA), per board policy 701.5R1. Target 10&ndash;15%, 5% floor.</p>
+<svg viewBox="0 0 760 326" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" font-family="inherit"><line x1="56" y1="263.5" x2="742" y2="263.5" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="267.5" text-anchor="end" font-size="11" fill="#5b6675">-5%</text><line x1="56" y1="209.2" x2="742" y2="209.2" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="213.2" text-anchor="end" font-size="11" fill="#5b6675">0%</text><line x1="56" y1="155.0" x2="742" y2="155.0" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="159.0" text-anchor="end" font-size="11" fill="#5b6675">5%</text><line x1="56" y1="100.8" x2="742" y2="100.8" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="104.8" text-anchor="end" font-size="11" fill="#5b6675">10%</text><line x1="56" y1="46.5" x2="742" y2="46.5" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="50.5" text-anchor="end" font-size="11" fill="#5b6675">15%</text><text x="56.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’20</text><text x="132.2" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’21</text><text x="208.4" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’22</text><text x="284.7" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’23</text><text x="360.9" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’24</text><text x="437.1" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’25</text><text x="513.3" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’26</text><text x="589.6" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’27</text><text x="665.8" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’28</text><text x="742.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’29</text><line x1="513.3" y1="14" x2="513.3" y2="296" stroke="#c7cedb" stroke-width="1" stroke-dasharray="3 3"/><text x="518.3" y="25" font-size="10" fill="#5b6675">projected →</text><rect x="56" y="46.5" width="686" height="54.2" fill="#1f9d68" fill-opacity="0.18"/><text x="738" y="59.5" text-anchor="end" font-size="10" fill="#1f9d68" font-weight="700">board target 10–15%</text><line x1="56" y1="155.0" x2="742" y2="155.0" stroke="#d9822b" stroke-width="1.5" stroke-dasharray="5 4"/><text x="738" y="150.0" text-anchor="end" font-size="10" fill="#d9822b" font-weight="700">5% floor</text><line x1="56" y1="209.2" x2="742" y2="209.2" stroke="#aab2c0" stroke-width="1" stroke-dasharray="2 3"/><polygon points="437.1,164.9 513.3,232.6 589.6,252.9 665.8,266.5 742.0,281.2 742.0,19.4 665.8,68.2 589.6,118.2 513.3,163.7 437.1,164.9" fill="#2c5fb3" fill-opacity="0.16" stroke="none"/><polyline points="437.1,164.9 513.3,163.7 589.6,118.2 665.8,68.2 742.0,19.4" fill="none" stroke="#2c5fb3" stroke-width="1" stroke-dasharray="4 3"/><polyline points="437.1,164.9 513.3,232.6 589.6,252.9 665.8,266.5 742.0,281.2" fill="none" stroke="#2c5fb3" stroke-width="1" stroke-dasharray="4 3"/><polyline points="437.1,164.9 513.3,203.8 589.6,196.4 665.8,183.1 742.0,171.1" fill="none" stroke="#2c5fb3" stroke-width="2.8"/><polyline points="56.0,163.6 132.2,140.4 208.4,178.6 284.7,182.7 360.9,128.0 437.1,164.9" fill="none" stroke="#1a2230" stroke-width="2.8"/><circle cx="56.0" cy="163.6" r="3.2" fill="#1a2230"/><circle cx="132.2" cy="140.4" r="3.2" fill="#1a2230"/><circle cx="208.4" cy="178.6" r="3.2" fill="#1a2230"/><circle cx="284.7" cy="182.7" r="3.2" fill="#1a2230"/><circle cx="360.9" cy="128.0" r="3.2" fill="#1a2230"/><circle cx="437.1" cy="164.9" r="3.2" fill="#1a2230"/><circle cx="437.1" cy="164.9" r="3.2" fill="#2c5fb3"/><circle cx="513.3" cy="203.8" r="3.2" fill="#2c5fb3"/><circle cx="589.6" cy="196.4" r="3.2" fill="#2c5fb3"/><circle cx="665.8" cy="183.1" r="3.2" fill="#2c5fb3"/><circle cx="742.0" cy="171.1" r="3.2" fill="#2c5fb3"/><text x="742.0" y="11.4" text-anchor="end" font-size="11" font-weight="700" fill="#1f9d68">18%</text><text x="742.0" y="175.1" text-anchor="end" font-size="11" font-weight="700" fill="#2c5fb3">4%</text><text x="742.0" y="295.2" text-anchor="end" font-size="11" font-weight="700" fill="#c64236">-7%</text></svg></div>
+
+<div class="two-up">
+<div class="chart"><h3>Unspent Authorized Budget</h3>
+<p class="sub">Spending-authority cushion. Target 5&ndash;10%.</p>
+<svg viewBox="0 0 760 326" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" font-family="inherit"><line x1="56" y1="296.0" x2="742" y2="296.0" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="300.0" text-anchor="end" font-size="11" fill="#5b6675">-4%</text><line x1="56" y1="220.8" x2="742" y2="220.8" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="224.8" text-anchor="end" font-size="11" fill="#5b6675">0%</text><line x1="56" y1="126.8" x2="742" y2="126.8" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="130.8" text-anchor="end" font-size="11" fill="#5b6675">5%</text><line x1="56" y1="32.8" x2="742" y2="32.8" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="36.8" text-anchor="end" font-size="11" fill="#5b6675">10%</text><text x="56.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’20</text><text x="170.3" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’21</text><text x="284.7" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’22</text><text x="399.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’23</text><text x="513.3" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’24</text><text x="627.7" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’25</text><text x="742.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’26</text><line x1="742.0" y1="14" x2="742.0" y2="296" stroke="#c7cedb" stroke-width="1" stroke-dasharray="3 3"/><text x="747.0" y="25" font-size="10" fill="#5b6675">projected →</text><rect x="56" y="32.8" width="686" height="94.0" fill="#1f9d68" fill-opacity="0.18"/><text x="738" y="45.8" text-anchor="end" font-size="10" fill="#1f9d68" font-weight="700">board target 5–10%</text><line x1="56" y1="220.8" x2="742" y2="220.8" stroke="#aab2c0" stroke-width="1" stroke-dasharray="2 3"/><polyline points="56.0,198.8 170.3,189.2 284.7,218.5 399.0,243.5 513.3,190.0 627.7,177.4" fill="none" stroke="#1a2230" stroke-width="2.8"/><circle cx="56.0" cy="198.8" r="3.2" fill="#1a2230"/><circle cx="170.3" cy="189.2" r="3.2" fill="#1a2230"/><circle cx="284.7" cy="218.5" r="3.2" fill="#1a2230"/><circle cx="399.0" cy="243.5" r="3.2" fill="#1a2230"/><circle cx="513.3" cy="190.0" r="3.2" fill="#1a2230"/><circle cx="627.7" cy="177.4" r="3.2" fill="#1a2230"/><line x1="742.0" y1="189.8" x2="742.0" y2="265.9" stroke="#2c5fb3" stroke-width="6" stroke-opacity="0.25" stroke-linecap="round"/><circle cx="742.0" cy="246.9" r="3.6" fill="#2c5fb3"/><text x="742.0" y="264.9" text-anchor="middle" font-size="11" font-weight="700" fill="#2c5fb3">FY26 ~-1.4%</text><text x="399.0" y="259.5" text-anchor="middle" font-size="11" font-weight="700" fill="#c64236">−1.2%</text></svg></div>
+<div class="chart"><h3>Bonded debt load</h3>
+<p class="sub">Outstanding GO + SAVE bonds, $M (audited).</p>
+<svg viewBox="0 0 760 326" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" font-family="inherit"><line x1="56" y1="296.0" x2="742" y2="296.0" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="300.0" text-anchor="end" font-size="11" fill="#5b6675">$0M</text><line x1="56" y1="225.5" x2="742" y2="225.5" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="229.5" text-anchor="end" font-size="11" fill="#5b6675">$50M</text><line x1="56" y1="155.0" x2="742" y2="155.0" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="159.0" text-anchor="end" font-size="11" fill="#5b6675">$100M</text><line x1="56" y1="84.5" x2="742" y2="84.5" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="88.5" text-anchor="end" font-size="11" fill="#5b6675">$150M</text><line x1="56" y1="14.0" x2="742" y2="14.0" stroke="#e3e7ee" stroke-width="1"/><text x="48" y="18.0" text-anchor="end" font-size="11" fill="#5b6675">$200M</text><text x="56.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’20</text><text x="284.7" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’21</text><text x="513.3" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’22</text><text x="742.0" y="316" text-anchor="middle" font-size="11" fill="#5b6675">’23</text><polyline points="56.0,46.6 284.7,55.5 513.3,64.8 742.0,74.9" fill="none" stroke="#2c5fb3" stroke-width="2.5"/><circle cx="56.0" cy="46.6" r="3.2" fill="#2c5fb3"/><circle cx="284.7" cy="55.5" r="3.2" fill="#2c5fb3"/><circle cx="513.3" cy="64.8" r="3.2" fill="#2c5fb3"/><circle cx="742.0" cy="74.9" r="3.2" fill="#2c5fb3"/><polyline points="56.0,179.7 284.7,191.1 513.3,202.7 742.0,63.8" fill="none" stroke="#d9822b" stroke-width="2.5"/><circle cx="56.0" cy="179.7" r="3.2" fill="#d9822b"/><circle cx="284.7" cy="191.1" r="3.2" fill="#d9822b"/><circle cx="513.3" cy="202.7" r="3.2" fill="#d9822b"/><circle cx="742.0" cy="63.8" r="3.2" fill="#d9822b"/><text x="56.0" y="36.6" text-anchor="start" font-size="11" font-weight="700" fill="#2c5fb3">GO bonds</text><text x="742.0" y="53.8" text-anchor="end" font-size="11" font-weight="700" fill="#d9822b">SAVE bonds</text><text x="742.0" y="81.8" text-anchor="end" font-size="10" fill="#d9822b">new issuance</text></svg></div>
+</div>
+
+<h2>The numbers</h2>
+<table>
+<tr><th>FY2026 (base)</th><th>Conservative</th><th>Base</th><th>Optimistic</th></tr>
+<tr><td>Operating result</td><td>−$11.5M</td>
+<td>−$6.0M</td>
+<td>+$1.8M</td></tr>
+<tr><td>Solvency ratio</td><td>-2.1%</td><td><b>0.5%</b></td><td>4.2%</td></tr>
+<tr><td>UAB ratio</td><td>-2.4%</td><td><b>-1.4%</b></td><td>1.6%</td></tr>
+<tr><td>FY2029 solvency</td><td>-6.6%</td><td><b>3.5%</b></td><td>17.5%</td></tr>
+</table>
+
+<h2>How to read this</h2>
+<div class="card"><ul>
+<li><b>Base case</b> is reconciled to PFM&rsquo;s own 7-year General Fund cash-flow model (the district advisor&rsquo;s projection).</li>
+<li><b>The plume</b> widens because small annual surplus/deficit differences compound on a thin fund balance &mdash; by FY2029 the outcomes range from deeply negative to a full recovery.</li>
+<li><b>Targets</b> are the board&rsquo;s own (policy 701.5R1): solvency 10&ndash;15% (5% floor), UAB 5&ndash;10%. Both sit above where the forecast lands.</li>
+<li><b>Debt</b> is shown through the latest audited year (FY2023); GO bonds are being paid down while SAVE jumped on a FY2023 issuance.</li>
+</ul></div>
+
+<footer>
+<p><b>Sources.</b> data/normalized/gf_forecast.csv (this model); PFM Financial Advisors board
+presentations; ICCSD audited ACFRs (FY2020&ndash;2023); Iowa DOM filings. FY2024&ndash;2029 figures are
+unaudited estimates/projections carrying material uncertainty &mdash; that uncertainty is the plume.</p>
+<p class="src"><b>Disclaimer.</b> Unofficial, illustrative estimate. Not investment advice and not
+affiliated with ICCSD or PFM. Regenerate with <code>python scripts/site/build_forecast_page.py</code>.</p>
+</footer>
+</div></body></html>
