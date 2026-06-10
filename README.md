@@ -13,6 +13,18 @@ spreadsheets, PDFs, and meeting transcripts.
 > [iowacityschools.org](https://www.iowacityschools.org) or
 > [simbli.eboardsolutions.com](https://simbli.eboardsolutions.com).
 
+## Website (GitHub Pages)
+
+A reader-friendly site lives in [`docs/`](docs/) and is the published face of this
+project: a landing page plus HTML versions of the KPI scorecard, forecast,
+liquidity analysis, board-materials triage, and the hypothetical 2028 Moody's GO
+rating assessment. Rebuild it with `python scripts/site/build_site.py` (regenerates
+the HTML from the markdown reports + `docs/site.css`).
+
+**To publish:** in the repo's **Settings → Pages**, set the source to **Deploy from
+a branch**, branch = the published branch, folder = **`/docs`**. The site then
+serves at `https://michael480th.github.io/ICCashForecast/`.
+
 ---
 
 ## What this project does
